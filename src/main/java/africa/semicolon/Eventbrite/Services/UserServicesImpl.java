@@ -19,6 +19,9 @@ public class UserServicesImpl implements UserServices {
 
     @Override
     public RegisterUserResponse register(RegisterUserRequest userRequest) {
+        Optional<User> foundUser = repository.findByEmailAddress(userRequest.getEmailAddress());
+        if (foundUser.isPresent()) throw new RuntimeException("User fucking exists, dumbass bitch");
+
         User user = new User();
         user.setFirstName(userRequest.getFirstName());
         user.setLastName(userRequest.getLastName());
@@ -36,16 +39,14 @@ public class UserServicesImpl implements UserServices {
 
     @Override
     public LoginUserResponse login(LoginUserRequest loginUserRequest) {
-        Optional <User> user = repository.findByEmailAddress(loginUserRequest.getEmail());
-        if (user.isPresent()) {
-            if (user.get().getPassword().equals(loginUserRequest.getPassword())){
-                LoginUserResponse loginUserResponse = new LoginUserResponse();
-                loginUserResponse.setWelcomeMessage("Welcome " + loginUserResponse.getWelcomeMessage());
-                return loginUserResponse;
-            }
-            else throw new IllegalArgumentException("Incorrect Email or Password");
-        }
-        else throw new IllegalArgumentException("Incorrect details");
-    }
+        User user = repository.findByEmailAddress(loginUserRequest.getEmail()).orElseThrow(
+                () -> new IllegalArgumentException("User not found")
+        );
+        if (!user.getPassword().equals(loginUserRequest.getPassword()))
+            throw new IllegalArgumentException("Incorrect Password");
 
+        LoginUserResponse loginUserResponse = new LoginUserResponse();
+        loginUserResponse.setWelcomeMessage("Welcome " + loginUserResponse.getWelcomeMessage());
+        return loginUserResponse;
+    }
 }
