@@ -6,6 +6,8 @@ import africa.semicolon.Eventbrite.Dto.Response.LoginUserResponse;
 import africa.semicolon.Eventbrite.Dto.Response.RegisterUserResponse;
 import africa.semicolon.Eventbrite.Services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,8 +19,12 @@ public class UserController {
     private UserServices services;
 
     @PostMapping("/user")
-    public RegisterUserResponse signUp(@RequestBody RegisterUserRequest userRequest){
-       return services.register(userRequest);
+    public ResponseEntity <?> signUp(@RequestBody RegisterUserRequest userRequest){
+        try {
+            return new ResponseEntity<>(services.register(userRequest), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("login/user")
