@@ -11,17 +11,20 @@ import africa.semicolon.Eventbrite.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserServicesImpl implements UserServices {
-    @Autowired
+
     private UserRepository repository;
 
+    public UserServicesImpl(@Autowired UserRepository repository){
+        this.repository = repository;
+    }
+    public UserServicesImpl(){
+
+    }
     @Override
     public RegisterUserResponse register(RegisterUserRequest userRequest) {
-        Optional<User> foundUser = repository.findByEmailAddress(userRequest.getEmailAddress());
-        if (foundUser.isPresent()) throw new DuplicateEmailException("User exists, try another email address");
+        if (repository.existsByEmailAddress(userRequest.getEmailAddress())) throw new DuplicateEmailException("Email Address taken");
 
         User user = new User();
         Mapper.map(userRequest, user);
@@ -37,8 +40,8 @@ public class UserServicesImpl implements UserServices {
     @Override
     public LoginUserResponse login(LoginUserRequest loginUserRequest) {
         User user = repository.findByEmailAddress(loginUserRequest.getEmail()).orElseThrow(
-                () -> new IllegalArgumentException("User not found")
-        );
+                () -> new IllegalArgumentException("User not found"));
+
         if (!user.getPassword().equals(loginUserRequest.getPassword()))
             throw new IllegalArgumentException("Incorrect Password");
 

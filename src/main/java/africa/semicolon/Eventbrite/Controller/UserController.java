@@ -2,8 +2,8 @@ package africa.semicolon.Eventbrite.Controller;
 
 import africa.semicolon.Eventbrite.Dto.Request.LoginUserRequest;
 import africa.semicolon.Eventbrite.Dto.Request.RegisterUserRequest;
+import africa.semicolon.Eventbrite.Dto.Response.ApiResponse;
 import africa.semicolon.Eventbrite.Dto.Response.LoginUserResponse;
-import africa.semicolon.Eventbrite.Dto.Response.RegisterUserResponse;
 import africa.semicolon.Eventbrite.Services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +21,11 @@ public class UserController {
     @PostMapping("/user")
     public ResponseEntity <?> signUp(@RequestBody RegisterUserRequest userRequest){
         try {
-            return new ResponseEntity<>(services.register(userRequest), HttpStatus.OK);
+            var serviceResponse = services.register(userRequest);
+            ApiResponse response = new ApiResponse(true, serviceResponse);
+            return new ResponseEntity<>(services.register(userRequest), HttpStatus.CREATED);
         } catch (Exception e){
+            ApiResponse response = new ApiResponse(false, e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
