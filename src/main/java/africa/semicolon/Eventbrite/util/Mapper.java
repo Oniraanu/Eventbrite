@@ -30,6 +30,6 @@ public class Mapper {
     }
 
     public static void map(Party savedParty, CreatePartyResponse createPartyResponse){
-        createPartyResponse.
+        savedParty.getName();
     }
 }
