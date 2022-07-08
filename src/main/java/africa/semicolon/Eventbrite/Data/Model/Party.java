@@ -2,13 +2,13 @@ package africa.semicolon.Eventbrite.Data.Model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.annotation.Id;
 
-@Document("Party")
 @Data
 @NoArgsConstructor
 public class Party {
 
+    @Id
     private String id;
     private String name;
     private String location;

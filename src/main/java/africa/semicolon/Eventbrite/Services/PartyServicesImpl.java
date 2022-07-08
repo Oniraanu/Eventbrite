@@ -2,9 +2,7 @@ package africa.semicolon.Eventbrite.Services;
 
 import africa.semicolon.Eventbrite.Data.Model.Party;
 import africa.semicolon.Eventbrite.Data.Repository.PartyRepository;
-import africa.semicolon.Eventbrite.Dto.Request.CreatePartyRequest;
-import africa.semicolon.Eventbrite.Dto.Response.CreatePartyResponse;
-import africa.semicolon.Eventbrite.util.Mapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +15,7 @@ public class PartyServicesImpl implements PartyServices{
     private PartyRepository partyRepository;
 
     @Override
-    public CreatePartyResponse partyResponse(CreatePartyRequest partyRequest) {
-        Party party = new Party();
-        Mapper.
-
-        return null;
+    public Party saveParty(Party party) {
+        return partyRepository.save(party);
     }
 }

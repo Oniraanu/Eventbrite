@@ -1,9 +1,9 @@
 package africa.semicolon.Eventbrite.Services;
 
-import africa.semicolon.Eventbrite.Dto.Request.CreatePartyRequest;
-import africa.semicolon.Eventbrite.Dto.Response.CreatePartyResponse;
+import africa.semicolon.Eventbrite.Data.Model.Party;
 
 public interface PartyServices {
 
-    CreatePartyResponse partyResponse(CreatePartyRequest partyRequest);
+    Party saveParty(Party party);
+
 }

@@ -1,5 +1,6 @@
 package africa.semicolon.Eventbrite.Controller;
 
+import africa.semicolon.Eventbrite.Dto.Request.CreatePartyRequest;
 import africa.semicolon.Eventbrite.Dto.Request.LoginUserRequest;
 import africa.semicolon.Eventbrite.Dto.Request.RegisterUserRequest;
 import africa.semicolon.Eventbrite.Dto.Response.ApiResponse;
@@ -33,6 +34,18 @@ public class UserController {
     @PostMapping("login/user")
     public LoginUserResponse login(@RequestBody LoginUserRequest loginUserRequest){
         return services.login(loginUserRequest);
+    }
+
+    @PostMapping("/party")
+    public ResponseEntity <?> createParty(@RequestBody CreatePartyRequest partyRequest){
+        try {
+            var serviceResponse = services.partyResponse(partyRequest);
+            ApiResponse response = new ApiResponse(true, serviceResponse);
+            return new ResponseEntity<>(services.partyResponse(partyRequest), HttpStatus.CREATED);
+        } catch (Exception e){
+            ApiResponse response = new ApiResponse(false, e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

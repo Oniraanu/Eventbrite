@@ -30,6 +30,7 @@ public class Mapper {
     }
 
     public static void map(Party savedParty, CreatePartyResponse createPartyResponse){
-        savedParty.getName();
+        createPartyResponse.setPartyName(savedParty.getName());
+        createPartyResponse.setPartyLocation(savedParty.getLocation());
     }
 }
